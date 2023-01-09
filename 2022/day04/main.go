@@ -37,6 +37,7 @@ func main() {
 	s = time.Now()
 	fmt.Printf("Part Two: %d (%v)\n", partTwo(ranges), time.Since(s))
 }
+
 func parseInt(data string) int {
 	n, e := strconv.Atoi(data)
 	if e != nil {
@@ -44,12 +45,14 @@ func parseInt(data string) int {
 	}
 	return n
 }
+
 func parsePair(data string) pair {
 	numbers := strings.Split(data, "-")
 	start, end := parseInt(numbers[0]), parseInt(numbers[1])
 
 	return pair{start, end}
 }
+
 func parsePairs(data string) (pair, pair) {
 	parts := strings.Split(data, ",")
 
