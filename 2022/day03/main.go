@@ -12,6 +12,7 @@ func main() {
 	fmt.Println("Part Two:", partTwo())
 }
 
+// score returns the priority, where a-z = 1-26, A-Z = 27-52
 func score(item rune) int {
 	r := int(unicode.ToLower(item) - 96)
 	if unicode.IsUpper(item) {
