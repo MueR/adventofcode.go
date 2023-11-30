@@ -61,7 +61,8 @@ func parsePairs(data string) (pair, pair) {
 
 func partOne(ranges map[int][]pair) (result int) {
 	for _, elves := range ranges {
-		if (elves[0].start >= elves[1].start && elves[0].end <= elves[1].end) || (elves[1].start >= elves[0].start && elves[1].end <= elves[0].end) {
+		if (elves[0].start >= elves[1].start && elves[0].end <= elves[1].end) ||
+			(elves[1].start >= elves[0].start && elves[1].end <= elves[0].end) {
 			result++
 		}
 	}

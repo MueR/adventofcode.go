@@ -11,3 +11,7 @@ func ToInt(arg interface{}) int {
 	}
 	return val
 }
+
+func IntToByteSlice(in int) []byte {
+	return []byte(strconv.Itoa(in))
+}
