@@ -6,9 +6,9 @@ help: ## Show this help
 	@ grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 skeleton: ## make skeleton main(_test).go files, optional: $DAY and $YEAR
-	@ if [[ -n $$DAY && -n $$YEAR ]]; then \
+	@ if [ -n $$DAY && -n $$YEAR ]; then \
 		go run scripts/cmd/skeleton/main.go -day $(DAY) -year $(YEAR) ; \
-	elif [[ -n $$DAY ]]; then \
+	elif [ -n $$DAY ]; then \
 		go run scripts/cmd/skeleton/main.go -day $(DAY); \
 	else \
 		go run scripts/cmd/skeleton/main.go; \

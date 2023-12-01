@@ -1,1 +1,4 @@
 .idea
+input*.txt
+!scripts/skeleton/tmpls/input.txt
+_*

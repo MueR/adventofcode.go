@@ -3,6 +3,7 @@ package skeleton
 import (
 	"embed"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
@@ -31,6 +32,7 @@ func Run(day, year int) {
 
 	mainFilename := filepath.Join(util.Dirname(), "../../", fmt.Sprintf("%d/day%02d/main.go", year, day))
 	testFilename := filepath.Join(util.Dirname(), "../../", fmt.Sprintf("%d/day%02d/main_test.go", year, day))
+	inputFileName := filepath.Join(util.Dirname(), "../../", fmt.Sprintf("%d/day%02d/input.txt", year, day))
 
 	err = os.MkdirAll(filepath.Dir(mainFilename), os.ModePerm)
 	if err != nil {
@@ -39,6 +41,7 @@ func Run(day, year int) {
 
 	ensureNotOverwriting(mainFilename)
 	ensureNotOverwriting(testFilename)
+	ensureNotOverwriting(inputFileName)
 
 	mainFile, err := os.Create(mainFilename)
 	if err != nil {
@@ -48,9 +51,22 @@ func Run(day, year int) {
 	if err != nil {
 		log.Fatalf("creating main_test.go file: %v", err)
 	}
+	inputFile, err := os.Create(inputFileName)
+	if err != nil {
+		log.Fatalf("creating input.txt file: %v", err)
+	}
 
 	ts.ExecuteTemplate(mainFile, "main.go", nil)
 	ts.ExecuteTemplate(testFile, "main_test.go", nil)
+	it, err := os.Open(filepath.Join(util.Dirname(), "/tmpls/input.txt"))
+	if err != nil {
+		log.Fatalf("opening input.txt template: %v", err)
+	}
+	_, err = io.Copy(inputFile, it)
+	if err != nil {
+		log.Fatalf("copying input.txt template: %v", err)
+	}
+
 	fmt.Printf("templates made for %d-day%d\n", year, day)
 }
 

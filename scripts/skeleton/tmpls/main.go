@@ -7,7 +7,6 @@ import (
 	"strings"
 
 	"github.com/MueR/adventofcode.go/cast"
-	"golang.design/x/clipboard"
 )
 
 //go:embed input.txt
@@ -29,11 +28,11 @@ func main() {
 
 	if part == 1 {
 		ans := part1(input)
-		clipboard.Write(clipboard.FmtText, cast.IntToByteSlice(ans))
+		//clipboard.Write(clipboard.FmtText, cast.IntToByteSlice(ans))
 		fmt.Println("Output:", ans)
 	} else {
 		ans := part2(input)
-		clipboard.Write(clipboard.FmtText, cast.IntToByteSlice(ans))
+		//clipboard.Write(clipboard.FmtText, cast.IntToByteSlice(ans))
 		fmt.Println("Output:", ans)
 	}
 }
