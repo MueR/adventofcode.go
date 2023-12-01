@@ -4,16 +4,27 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"regexp"
+	"strconv"
 	"strings"
 	"time"
 
-	"github.com/MueR/adventofcode.go/cast"
 	"github.com/MueR/adventofcode.go/maths"
 )
 
 //go:embed input.txt
 var input string
+
+var wordToDigit = map[string]int{
+	"one":   1,
+	"two":   2,
+	"three": 3,
+	"four":  4,
+	"five":  5,
+	"six":   6,
+	"seven": 7,
+	"eight": 8,
+	"nine":  9,
+}
 
 func init() {
 	// do this in init (not main) so test file has same input
@@ -40,26 +51,63 @@ func main() {
 	}
 }
 
+func linesToNumbers(lines []string, mw bool) (numbers []int) {
+	for _, line := range lines {
+		numbers = append(numbers, (findFirstDigit(line, mw)*10)+findLastDigit(line, mw))
+	}
+	return numbers
+}
+
 func part1(input string) int {
-	lines := parseInput(input)
-	return maths.SumIntSlice(linesToNumbers(lines))
+	return maths.SumIntSlice(linesToNumbers(parseInput(input), false))
 }
 
 func part2(input string) int {
-	rep := strings.NewReplacer("one", "1", "two", "2", "three", "3", "four", "4", "five", "5", "six", "6", "seven", "7", "eight", "8", "nine", "9")
-	input = rep.Replace(input)
-
-	lines := parseInput(input)
-	return maths.SumIntSlice(linesToNumbers(lines))
+	return maths.SumIntSlice(linesToNumbers(parseInput(input), true))
 }
 
-func linesToNumbers(lines []string) (numbers []int) {
-	re := regexp.MustCompile(`[0-9]`)
-	for _, line := range lines {
-		chars := re.FindAllString(line, -1)
-		numbers = append(numbers, cast.ToInt(chars[0]+chars[len(chars)-1]))
+func findFirstDigit(s string, mw bool) int {
+	for i := 0; i < len(s); i++ {
+		if isDigit(string(s[i])) {
+			d, err := strconv.Atoi(string(s[i]))
+			if err == nil {
+				return d
+			}
+		}
+		if !mw {
+			continue
+		}
+		for word, digit := range wordToDigit {
+			if strings.HasPrefix(s[i:], word) {
+				return digit
+			}
+		}
 	}
-	return numbers
+	return 0
+}
+func findLastDigit(s string, mw bool) int {
+	for i := len(s) - 1; i >= 0; i-- {
+		if isDigit(string(s[i])) {
+			d, err := strconv.Atoi(string(s[i]))
+			if err == nil {
+				return d
+			}
+		}
+		if !mw {
+			continue
+		}
+		for word, digit := range wordToDigit {
+			if strings.HasSuffix(s[:i+1], word) {
+				return digit
+			}
+		}
+	}
+	return 0
+}
+
+func isDigit(s string) bool {
+	_, err := strconv.Atoi(s)
+	return err == nil
 }
 
 func parseInput(input string) (ans []string) {
