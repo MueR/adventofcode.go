@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+	"time"
 
 	"github.com/MueR/adventofcode.go/cast"
 )
@@ -26,14 +27,13 @@ func main() {
 	flag.Parse()
 	fmt.Println("Running part", part)
 
+	s := time.Now()
 	if part == 1 {
 		ans := part1(input)
-		//clipboard.Write(clipboard.FmtText, cast.IntToByteSlice(ans))
-		fmt.Println("Output:", ans)
+		fmt.Printf("Part 1 output: %v  (%v)\n", ans, time.Since(s))
 	} else {
 		ans := part2(input)
-		//clipboard.Write(clipboard.FmtText, cast.IntToByteSlice(ans))
-		fmt.Println("Output:", ans)
+		fmt.Printf("Part 2 output: %v  (%v)\n", ans, time.Since(s))
 	}
 }
 
