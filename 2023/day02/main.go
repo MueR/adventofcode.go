@@ -4,15 +4,15 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
-
-	"github.com/MueR/adventofcode.go/maths"
 )
 
-//go:embed input.txt
-var input string
+var (
+	//go:embed input.txt
+	input string
+	games map[int]game
+)
 
 func init() {
 	// do this in init (not main) so test file has same input
@@ -42,41 +42,24 @@ func main() {
 	}
 }
 
-type pull struct {
-	red   int
-	green int
-	blue  int
-}
-type game struct {
-	num   int
-	pulls []pull
-	min   pull
-}
-
-var games map[int]game
-
-func part1() int {
-	possible := 0
+func part1() (possible int) {
+	rules := hand{red: 12, green: 13, blue: 14}
 	for _, g := range games {
-		valid := true
-		for _, p := range g.pulls {
-			if p.red > 12 || p.green > 13 || p.blue > 14 {
-				valid = false
-				break
+		for _, h := range g.hands {
+			if !h.Valid(rules) {
+				goto skip
 			}
 		}
-		if valid {
-			possible += g.num
-		}
+		possible += g.num
+	skip:
 	}
 
 	return possible
 }
 
-func part2() int {
-	possible := 0
+func part2() (possible int) {
 	for _, g := range games {
-		possible += g.min.red * g.min.green * g.min.blue
+		possible += g.min.Pow()
 	}
 	return possible
 }
@@ -84,31 +67,8 @@ func part2() int {
 func parseInput(input string) (ans []game) {
 	s := strings.Split(input, "\n")
 	games = make(map[int]game)
-	for gameNum, line := range s {
-		gs := strings.Split(line, ":")
-		g := game{}
-		g.num = gameNum + 1
-		for _, round := range strings.Split(gs[1], ";") {
-			for _, pd := range strings.Split(round, ",") {
-				d := strings.TrimSpace(pd)
-				sd := strings.Split(d, " ")
-				p := pull{}
-				num, _ := strconv.Atoi(sd[0])
-				switch sd[1] {
-				case "red":
-					p.red = num
-					g.min.red = maths.MaxInt([]int{g.min.red, num})
-				case "green":
-					p.green = num
-					g.min.green = maths.MaxInt([]int{g.min.green, num})
-				case "blue":
-					p.blue = num
-					g.min.blue = maths.MaxInt([]int{g.min.blue, num})
-				}
-				g.pulls = append(g.pulls, p)
-			}
-		}
-		games[gameNum] = g
+	for i, line := range s {
+		games[i+1] = newGame(line)
 	}
 	return ans
 }
