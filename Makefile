@@ -1,3 +1,7 @@
+YEAR := $$(shell /bin/date +'%Y')
+DAY := $$(shell /bin/date +'%d')
+
+
 # https://gist.github.com/prwhite/8168133
 help: ## Show this help
 	@ echo 'Usage: make <target>'
@@ -13,3 +17,9 @@ skeleton: ## make skeleton main(_test).go files, optional: $DAY and $YEAR
 	else \
 		go run scripts/cmd/skeleton/main.go; \
 	fi
+
+test: ## run tests
+	@ env && go test ./$$(date +'%Y')/day$$(date +'%d') && echo "Looks good to me!"
+
+run: ## run current day
+	@ go run ./$$(date +'%Y')/day$$(date +'%d')
