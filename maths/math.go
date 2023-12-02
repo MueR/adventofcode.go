@@ -1,23 +1,25 @@
 package maths
 
-func SumIntSlice(nums []int) int {
-	var sum int
+import (
+	"math"
+)
+
+func SumIntSlice(nums []int) (sum int) {
 	for _, n := range nums {
 		sum += n
 	}
 	return sum
 }
 
-func MultiplyIntSlice(nums []int) int {
-	product := 1
+func MultiplyIntSlice(nums []int) (product int) {
+	product = 1
 	for _, n := range nums {
 		product *= n
 	}
 	return product
 }
 
-func MaxInt(nums []int) int {
-	max := nums[0]
+func MaxInt(nums []int) (max int) {
 	for _, v := range nums {
 		if v > max {
 			max = v
@@ -26,14 +28,14 @@ func MaxInt(nums []int) int {
 	return max
 }
 
-func MinInt(nums ...int) int {
-	minNum := nums[0]
+func MinInt(nums ...int) (min int) {
+	min = math.MaxInt64
 	for _, v := range nums {
-		if v < minNum {
-			minNum = v
+		if v < min {
+			min = v
 		}
 	}
-	return minNum
+	return min
 }
 
 func AbsInt(in int) int {

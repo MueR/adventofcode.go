@@ -4,10 +4,11 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
-	"math"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/MueR/adventofcode.go/maths"
 )
 
 //go:embed input.txt
@@ -96,13 +97,13 @@ func parseInput(input string) (ans []game) {
 				switch sd[1] {
 				case "red":
 					p.red = num
-					g.min.red = int(math.Max(float64(g.min.red), float64(num)))
+					g.min.red = maths.MaxInt([]int{g.min.red, num})
 				case "green":
 					p.green = num
-					g.min.green = int(math.Max(float64(g.min.green), float64(num)))
+					g.min.green = maths.MaxInt([]int{g.min.green, num})
 				case "blue":
 					p.blue = num
-					g.min.blue = int(math.Max(float64(g.min.blue), float64(num)))
+					g.min.blue = maths.MaxInt([]int{g.min.blue, num})
 				}
 				g.pulls = append(g.pulls, p)
 			}
