@@ -5,7 +5,6 @@ import (
 	"flag"
 	"fmt"
 	"math"
-	"regexp"
 	"strconv"
 	"strings"
 	"time"
@@ -32,12 +31,12 @@ func main() {
 	fmt.Printf("Parsing: %v\n", time.Since(s))
 	s = time.Now()
 	if part != 2 {
-		ans := part1(input)
+		ans := part1()
 		fmt.Printf("Part 1 output: %v  (%v)\n", ans, time.Since(s))
 	}
 	s = time.Now()
 	if part != 1 {
-		ans := part2(input)
+		ans := part2()
 		fmt.Printf("Part 2 output: %v  (%v)\n", ans, time.Since(s))
 	}
 }
@@ -55,12 +54,12 @@ type game struct {
 
 var games map[int]game
 
-func part1(input string) int {
+func part1() int {
 	possible := 0
 	for _, g := range games {
 		valid := true
 		for _, p := range g.pulls {
-			if p.red > 12 || p.green > 12 || p.blue > 12 {
+			if p.red > 12 || p.green > 13 || p.blue > 14 {
 				valid = false
 				break
 			}
@@ -73,7 +72,7 @@ func part1(input string) int {
 	return possible
 }
 
-func part2(input string) int {
+func part2() int {
 	possible := 0
 	for _, g := range games {
 		possible += g.min.red * g.min.green * g.min.blue
@@ -83,25 +82,18 @@ func part2(input string) int {
 
 func parseInput(input string) (ans []game) {
 	s := strings.Split(input, "\n")
-	re := regexp.MustCompile(`Game (\d+): (.*)`)
 	games = make(map[int]game)
-	for _, line := range s {
-		if !re.MatchString(line) {
-			panic("bad input")
-		}
+	for gameNum, line := range s {
+		gs := strings.Split(line, ":")
 		g := game{}
-		m := re.FindStringSubmatch(line)
-		gameNum, _ := strconv.Atoi(m[1])
-		g.num = gameNum
-
-		pulls := strings.Split(m[2], ";")
-		for _, round := range pulls {
-			re := regexp.MustCompile(`(\d+) (\w+)`)
-			matches := re.FindAllStringSubmatch(round, -1)
-			for _, pd := range matches {
+		g.num = gameNum + 1
+		for _, round := range strings.Split(gs[1], ";") {
+			for _, pd := range strings.Split(round, ",") {
+				d := strings.TrimSpace(pd)
+				sd := strings.Split(d, " ")
 				p := pull{}
-				num, _ := strconv.Atoi(pd[1])
-				switch pd[2] {
+				num, _ := strconv.Atoi(sd[0])
+				switch sd[1] {
 				case "red":
 					p.red = num
 					g.min.red = int(math.Max(float64(g.min.red), float64(num)))
