@@ -15,19 +15,19 @@ var example = `467..114..
 ...$.*....
 .664.598..`
 
-func Test_part1(t *testing.T) {
+func TestPart1(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
 		want  int
 	}{
 		{
-			name:  "example",
+			name:  "Example",
 			input: example,
 			want:  4361,
 		},
 		{
-			name:  "actual",
+			name:  "Actual",
 			input: input,
 			want:  517021,
 		},
@@ -41,19 +41,19 @@ func Test_part1(t *testing.T) {
 	}
 }
 
-func Test_part2(t *testing.T) {
+func TestPart2(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
 		want  int
 	}{
 		{
-			name:  "example",
+			name:  "Example",
 			input: example,
 			want:  467835,
 		},
 		{
-			name:  "actual",
+			name:  "Actual",
 			input: input,
 			want:  81296995,
 		},

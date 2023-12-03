@@ -19,7 +19,7 @@ skeleton: ## make skeleton main(_test).go files, optional: $DAY and $YEAR
 	fi
 
 test: ## run tests
-	@ go test ./$$(date +'%Y')/day$$(date +'%d') && echo "Looks good to me!"
+	@ go test -v ./$$(date +'%Y')/day$$(date +'%d') && echo "\n✅  Looks good to me!"
 
 run: ## run current day
 	@ go run ./$$(date +'%Y')/day$$(date +'%d')

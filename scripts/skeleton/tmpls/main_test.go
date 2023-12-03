@@ -6,19 +6,19 @@ import (
 
 var example = ``
 
-func Test_part1(t *testing.T) {
+func TestPart1(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
 		want  int
 	}{
 		{
-			name:  "example",
+			name:  "Example",
 			input: example,
 			want:  0,
 		},
 		// {
-		// 	name:  "actual",
+		// 	name:  "Actual",
 		// 	input: input,
 		// 	want:  0,
 		// },
@@ -32,19 +32,19 @@ func Test_part1(t *testing.T) {
 	}
 }
 
-func Test_part2(t *testing.T) {
+func TestPart2(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
 		want  int
 	}{
 		{
-			name:  "example",
+			name:  "Example",
 			input: example,
 			want:  0,
 		},
 		// {
-		// 	name:  "actual",
+		// 	name:  "Actual",
 		// 	input: input,
 		// 	want:  0,
 		// },
