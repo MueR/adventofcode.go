@@ -7,6 +7,8 @@ import (
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/MueR/adventofcode.go/util"
 )
 
 var (
@@ -45,7 +47,7 @@ func part1(input string) int {
 	numbers := 0
 	for y, _ := range layout {
 		for x := 0; x < len(layout[y]); x++ {
-			if layout[y][x] == 46 || layout[y][x] >= 48 && layout[y][x] <= 57 {
+			if layout[y][x] == '.' || util.IsDigit(layout[y][x]) {
 				continue
 			}
 			layout[y] = layout[y][:x] + "." + layout[y][x+1:]
@@ -106,26 +108,22 @@ func getCurrentNumber(layout []string, x, y int) (n int, nl string) {
 	if y < 0 || y >= len(layout) || x < 0 || x >= len(layout[y]) {
 		return 0, ""
 	}
-	line := []rune(layout[y])
+	line := layout[y]
 	char := string(line[x])
-	line[x] = 46
+	line = line[:x] + "." + line[x+1:]
 	for i := x - 1; i >= 0; i-- {
-		if line[i] == 46 {
+		if !util.IsDigit(line[i]) {
 			break
 		}
-		if line[i] >= 48 && line[i] <= 57 {
-			char = string(line[i]) + char
-			line[i] = 46
-		}
+		char = string(line[i]) + char
+		line = line[:i] + "." + line[i+1:]
 	}
 	for i := x + 1; i < len(line); i++ {
-		if line[i] == 46 {
+		if !util.IsDigit(line[i]) {
 			break
 		}
-		if line[i] >= 48 && line[i] <= 57 {
-			char += string(line[i])
-			line[i] = 46
-		}
+		char += string(line[i])
+		line = line[:i] + "." + line[i+1:]
 	}
 	n, _ = strconv.Atoi(char)
 	return n, string(line)
