@@ -17,8 +17,9 @@ var (
 )
 
 type Card struct {
-	Index    string
+	Index    int
 	WinCount int
+	Value    int
 	Copies   int
 }
 
@@ -48,62 +49,46 @@ func main() {
 }
 
 func part1(input string) int {
-	cards := parseInput(input)
+	cards, _ := parseInput(input)
 
 	points := 0
 	for _, card := range cards {
-		if card.WinCount == 0 {
-			continue
-		}
-		p := 1
-		for i := 1; i < card.WinCount; i++ {
-			p *= 2
-		}
-		points += p
+		points += card.Value
 	}
 
 	return points
 }
 
 func part2(input string) int {
-	cards := parseInput(input)
+	cards, keys := parseInput(input)
 	totalCards := 0
-	keys := make([]int, len(cards))
-	for k := range cards {
-		kn, _ := strconv.Atoi(k)
-		keys = append(keys, kn)
-	}
-	sort.Ints(keys)
-	for _, cn := range keys {
-		k := strconv.Itoa(cn)
-		if ok := cards[k]; ok == nil {
-			continue
-		}
+	for _, k := range keys {
 		if cards[k].WinCount == 0 {
 			totalCards += cards[k].Copies
 			continue
 		}
-		for i := cn + 1; i <= min(cn+cards[k].WinCount, len(cards)); i++ {
-			cards[strconv.Itoa(i)].Copies += cards[k].Copies
+		for i := k + 1; i <= min(k+cards[k].WinCount, len(cards)); i++ {
+			cards[i].Copies += cards[k].Copies
 		}
 		totalCards += cards[k].Copies
 	}
 	return totalCards
 }
 
-func parseInput(input string) (cards map[string]*Card) {
-	cards = map[string]*Card{}
+func parseInput(input string) (cards map[int]*Card, keys []int) {
+	cards = map[int]*Card{}
 	for _, line := range strings.Split(input, "\n") {
 		parts := strings.Split(line, " | ")
 		csf := strings.Split(parts[0], ":")
 		cs := strings.Split(strings.TrimSpace(csf[1]), " ")
-		cn := strings.TrimSpace(csf[0][strings.Index(parts[0], " "):])
+		cn, _ := strconv.Atoi(strings.TrimSpace(csf[0][strings.Index(parts[0], " "):]))
 		ws := strings.Split(strings.TrimSpace(parts[1]), " ")
 		winNums := make([]int, len(ws))
 		cards[cn] = &Card{
 			Index:    cn,
 			WinCount: 0,
 			Copies:   1,
+			Value:    0,
 		}
 		for _, num := range ws {
 			n, err := strconv.Atoi(num)
@@ -115,8 +100,13 @@ func parseInput(input string) (cards map[string]*Card) {
 			n, _ := strconv.Atoi(num)
 			if slices.Contains(winNums, n) && n > 0 {
 				cards[cn].WinCount++
+				cards[cn].Value = max(1, cards[cn].Value*2)
 			}
 		}
 	}
-	return cards
+	for k := range cards {
+		keys = append(keys, k)
+	}
+	sort.Ints(keys)
+	return cards, keys
 }
