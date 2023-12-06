@@ -79,14 +79,18 @@ type Race struct {
 }
 
 func (r *Race) WaysToWin() int {
-	wins := 0
-	for t := 1; t < r.Time; t++ {
-		d := (r.Time - t) * t
-		// fmt.Printf("t: %v, d: %v, %v -- %v\n", t, d, r.Distance, d > r.Distance)
-		if d > r.Distance {
-			wins++
+	upper, lower := r.Time-1, 1
+	for lower > 0 {
+		if lower*(r.Time-lower) > r.Distance {
+			break
 		}
+		lower++
 	}
-
-	return wins
+	for upper > lower {
+		if upper*(r.Time-upper) > r.Distance {
+			break
+		}
+		upper--
+	}
+	return (upper - lower) + 1
 }

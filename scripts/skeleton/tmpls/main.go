@@ -10,8 +10,10 @@ import (
 	"github.com/MueR/adventofcode.go/cast"
 )
 
-//go:embed input.txt
-var input string
+var (
+	//go:embed input.txt
+	input string
+)
 
 func init() {
 	// do this in init (not main) so test file has same input
