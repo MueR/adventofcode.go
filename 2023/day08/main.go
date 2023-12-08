@@ -57,6 +57,7 @@ func part1(input string) int {
 }
 
 func part2(input string) int {
+	parseInput(input)
 	startNodes := make([]string, 0)
 	for k, _ := range nodes {
 		if k[2:] == "A" {
@@ -74,13 +75,16 @@ func part2(input string) int {
 		}
 		allSteps = append(allSteps, steps)
 	}
-
+	if len(allSteps) == 1 {
+		return allSteps[0]
+	}
 	return maths.LCM(allSteps[0], allSteps[1], allSteps[2:]...)
 }
 
 func parseInput(input string) {
 	parts := strings.Split(input, "\n\n")
 	nodes = make(map[string]map[string]string)
+	ops = make([]string, 0)
 	ops = strings.Split(parts[0], "")
 	re := regexp.MustCompile(`(\w+) = \((\w+), (\w+)\)`)
 	for _, line := range strings.Split(parts[1], "\n") {
