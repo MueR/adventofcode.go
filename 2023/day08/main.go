@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strings"
 	"time"
+
+	"github.com/MueR/adventofcode.go/maths"
 )
 
 var (
@@ -73,7 +75,7 @@ func part2(input string) int {
 		allSteps = append(allSteps, steps)
 	}
 
-	return LCM(allSteps[0], allSteps[1], allSteps[2:]...)
+	return maths.LCM(allSteps[0], allSteps[1], allSteps[2:]...)
 }
 
 func parseInput(input string) {
@@ -92,25 +94,4 @@ func parseInput(input string) {
 
 type Instruction struct {
 	Ops []string
-}
-
-// greatest common divisor (GCD) via Euclidean algorithm
-func GCD(a, b int) int {
-	for b != 0 {
-		t := b
-		b = a % b
-		a = t
-	}
-	return a
-}
-
-// find Least Common Multiple (LCM) via GCD
-func LCM(a, b int, integers ...int) int {
-	result := a * b / GCD(a, b)
-
-	for i := 0; i < len(integers); i++ {
-		result = LCM(result, integers[i])
-	}
-
-	return result
 }
