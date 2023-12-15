@@ -1,6 +1,5 @@
-YEAR := $$(shell /bin/date +'%Y')
-DAY := $$(shell /bin/date +'%d')
-
+YEAR ?= $(shell date +'%Y')
+DAY ?= $(shell date +'%d')
 
 # https://gist.github.com/prwhite/8168133
 help: ## Show this help
@@ -10,16 +9,20 @@ help: ## Show this help
 	@ grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "  \033[36m%-20s\033[0m %s\n", $$1, $$2}'
 
 skeleton: ## make skeleton main(_test).go files, optional: $DAY and $YEAR
-	@ if [ -n $$DAY && -n $$YEAR ]; then \
-		go run scripts/cmd/skeleton/main.go -day $(DAY) -year $(YEAR) ; \
-	elif [ -n $$DAY ]; then \
-		go run scripts/cmd/skeleton/main.go -day $(DAY); \
-	else \
-		go run scripts/cmd/skeleton/main.go; \
-	fi
+	go run scripts/cmd/skeleton/main.go -day $(DAY) -year $(YEAR) ; \
 
 test: ## run tests
-	@ go test -v ./$$(date +'%Y')/day$$(date +'%d') && echo "\n✅  Looks good to me!"
+	@ go test -v ./$(YEAR)/day$(DAY) && echo "\n✅  Looks good to me!"
 
 run: ## run current day
-	@ go run ./$$(date +'%Y')/day$$(date +'%d')
+	@ echo "              _                 _            __    _____          _      "
+	@ echo "     /\      | |               | |          / _|  / ____|        | |     "
+	@ echo "    /  \   __| |_   _____ _ __ | |_    ___ | |_  | |     ___   __| | ___ "
+	@ echo "   / /\ \ / _\` \ \ / / _ \ '_ \| __|  / _ \|  _| | |    / _ \ / _\` |/ _ \\"
+	@ echo "  / ____ \ (_| |\ V /  __/ | | | |_  | (_) | |   | |___| (_) | (_| |  __/"
+	@ echo " /_/    \_\__,_| \_/ \___|_| |_|\__|  \___/|_|    \_____\___/ \__,_|\___|"
+	@ echo "                                                                         "
+	@ echo "                              $(YEAR) day $(DAY)                                 "
+	@ echo ""
+
+	@ go run ./$(YEAR)/day$(DAY)
