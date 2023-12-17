@@ -3,6 +3,7 @@ module github.com/MueR/adventofcode.go
 go 1.21
 
 require (
+	github.com/emirpasic/gods v1.18.1
 	github.com/stretchr/testify v1.8.4
 	golang.org/x/sync v0.5.0
 )

@@ -21,6 +21,29 @@ const (
 	DownRight
 )
 
+// Rev reverses the current direction.
+func (d Direction) Rev() Direction {
+	switch d {
+	case Up:
+		return Down
+	case Down:
+		return Up
+	case Left:
+		return Right
+	case Right:
+		return Left
+	case UpLeft:
+		return DownRight
+	case UpRight:
+		return DownLeft
+	case DownLeft:
+		return UpRight
+	case DownRight:
+		return UpLeft
+	}
+	panic("not handled")
+}
+
 // Opposite returns the opposite direction.
 func (d Direction) Opposite() Direction {
 	switch d {
@@ -85,6 +108,11 @@ type Position struct {
 	Col int
 }
 
+// NewPosition creates a new position.
+func NewPosition(row, col int) Position {
+	return Position{Row: row, Col: col}
+}
+
 // String implements strings.Stringer.
 func (p Position) String() string {
 	return fmt.Sprintf("row=%d, col=%d", p.Row, p.Col)
@@ -130,4 +158,48 @@ func (p Position) Move(direction Direction, moves int) Position {
 	}
 
 	panic("not handled")
+}
+
+// Location represents a given position and direction.
+type Location struct {
+	Pos Position
+	Dir Direction
+}
+
+// NewLocation creates a new location.
+func NewLocation(row, col int, dir Direction) Location {
+	return Location{
+		Pos: NewPosition(row, col),
+		Dir: dir,
+	}
+}
+
+// Turn turns left or right.
+func (l Location) Turn(d Direction, moves int) Location {
+	dir := l.Dir.Turn(d)
+	pos := l.Pos.Move(dir, moves)
+	return Location{Pos: pos, Dir: dir}
+}
+
+// Rev moves in the reverse direction.
+func (l Location) Rev(moves int) Location {
+	dir := l.Dir.Rev()
+	pos := l.Pos.Move(dir, moves)
+	return Location{Pos: pos, Dir: dir}
+}
+
+// Straight moves in the current direction.
+func (l Location) Straight(moves int) Location {
+	pos := l.Pos.Move(l.Dir, moves)
+	return Location{Pos: pos, Dir: l.Dir}
+}
+
+// Move moves in a given direction.
+func (l Location) Move(d Direction, moves int) Location {
+	return Location{Pos: l.Pos.Move(d, moves), Dir: d}
+}
+
+// String implements strings.Stringer.
+func (l Location) String() string {
+	return fmt.Sprintf("dir=%s, pos=%s", l.Dir, l.Pos)
 }
