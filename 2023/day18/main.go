@@ -8,6 +8,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/MueR/adventofcode.go/maths"
 	"github.com/MueR/adventofcode.go/util"
 )
 
@@ -93,15 +94,15 @@ func getCapacity(instructions []instruction) int {
 
 	for _, inst := range instructions {
 		boundary += inst.distance
-		next := curr.Move(inst.direction, int(inst.distance))
+		next := curr.Move(inst.direction, inst.distance)
 		curr = next
 		vertices = append(vertices, curr)
 	}
 
 	for i := 0; i < len(vertices)-1; i++ {
 		a, b := vertices[i], vertices[i+1]
-		inside += a.Col*b.Row - a.Row*b.Col
+		inside += (a.Col * b.Row) - (a.Row * b.Col)
 	}
 
-	return boundary/2 + inside/2 + 1
+	return boundary/2 + maths.AbsInt(inside)/2 + 1
 }
