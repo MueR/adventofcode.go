@@ -52,26 +52,27 @@ func main() {
 }
 
 func part1(input string) int {
-	instructions, _ := parseInput(input)
+	instructions := parseInput(input, false)
 	return getCapacity(instructions)
 }
 
 func part2(input string) int {
-	_, instructions := parseInput(input)
+	instructions := parseInput(input, true)
 	return getCapacity(instructions)
 }
 
-func parseInput(input string) (p1 []instruction, p2 []instruction) {
+func parseInput(input string, p2 bool) (instructions []instruction) {
 	for _, line := range strings.Split(input, "\n") {
 		el := strings.Fields(line)
-		dir := dirMap[el[0]]
-		dist, _ := strconv.Atoi(el[1])
-		p1 = append(p1, instruction{dir, dist})
-
-		hDist, _ := strconv.ParseInt(el[2][2:7], 16, 64)
-		p2 = append(p2, instruction{dirMap[string(el[2][7])], int(hDist)})
+		if !p2 {
+			dist, _ := strconv.Atoi(el[1])
+			instructions = append(instructions, instruction{dirMap[el[0]], dist})
+		} else {
+			hDist, _ := strconv.ParseInt(el[2][2:7], 16, 64)
+			instructions = append(instructions, instruction{dirMap[string(el[2][7])], int(hDist)})
+		}
 	}
-	return p1, p2
+	return instructions
 }
 
 type instruction struct {
