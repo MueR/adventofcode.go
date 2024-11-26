@@ -4,7 +4,7 @@ import (
 	"testing"
 )
 
-var example = ``
+var example = `{{ (index .Samples 0) }}`
 
 func TestPart1(t *testing.T) {
 	tests := []struct {

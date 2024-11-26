@@ -26,3 +26,4 @@ run: ## run current day
 	@ echo ""
 
 	@ go run ./$(YEAR)/day$(DAY)
+

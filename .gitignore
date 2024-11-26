@@ -1,5 +1,9 @@
 .idea
+.env
 vendor
 input*.txt
 !scripts/skeleton/tmpls/input.txt
 _*
+
+./*/day*/README.md
+./*/day*/*.txt

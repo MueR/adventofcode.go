@@ -2,6 +2,8 @@ package grid
 
 import (
 	"strings"
+
+	"github.com/MueR/adventofcode.go/util"
 )
 
 type gridType interface {
@@ -10,21 +12,16 @@ type gridType interface {
 
 type Grid[T gridType] struct {
 	Layout []string
-	Map    map[Point]T
+	Map    map[util.Point]T
 	Height int
 	Width  int
 }
 
-type Point struct {
-	X int
-	Y int
-}
-
 func NewGrid[T gridType](layout []string) *Grid[T] {
-	points := make(map[Point]T)
+	points := make(map[util.Point]T)
 	for y, line := range layout {
 		for x, char := range line {
-			points[Point{X: x, Y: y}] = T(char)
+			points[util.Point{X: x, Y: y}] = T(char)
 		}
 	}
 	return &Grid[T]{
@@ -48,16 +45,20 @@ func (g *Grid[GridType]) Set(x, y int, b byte) {
 	}
 	line := []rune(g.Layout[y])
 	line[x] = rune(b)
+	g.Map[util.Point{X: x, Y: y}] = GridType(b)
 	g.Layout[y] = string(line)
 }
 
-func (g *Grid[GridType]) Neighbours(x, y int) (neighbours []GridType) {
-	for dy := -1; dy <= 1; dy++ {
-		for dx := -1; dx <= 1; dx++ {
-			if dx == 0 && dy == 0 {
-				continue
-			}
-			neighbours = append(neighbours, g.Get(x+dx, y+dy))
+func (g *Grid[GridType]) Neighbours(x, y int, diagonal bool) (neighbours []GridType) {
+	n := [][]int{
+		{-1, 0}, {0, -1}, {1, 0}, {0, 1},
+	}
+	if diagonal {
+		n = append(n, []int{-1, -1}, []int{1, -1}, []int{-1, 1}, []int{1, 1})
+	}
+	for _, d := range n {
+		if b := g.Get(x+d[0], y+d[1]); b != nil {
+			neighbours = append(neighbours, b)
 		}
 	}
 	return
