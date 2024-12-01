@@ -14,7 +14,9 @@ import (
 
 var (
 	//go:embed input.txt
-	input string
+	input       string
+	left, right []int
+	occurrences = make(map[int]int)
 )
 
 func init() {
@@ -23,6 +25,7 @@ func init() {
 	if len(input) == 0 {
 		panic("empty input.txt file")
 	}
+	left, right = parseInput(input)
 }
 
 func main() {
@@ -43,11 +46,8 @@ func main() {
 }
 
 func part1(input string) (res int) {
-	l, r := parseInput(input)
-	sort.Ints(l)
-	sort.Ints(r)
-	for i, vl := range l {
-		vr := r[i]
+	for i, vl := range left {
+		vr := right[i]
 		res += int(math.Abs(float64(vr - vl)))
 	}
 
@@ -55,18 +55,8 @@ func part1(input string) (res int) {
 }
 
 func part2(input string) (res int) {
-	l, r := parseInput(input)
-	sort.Ints(l)
-	sort.Ints(r)
-	for _, vl := range l {
-		for _, vr := range r {
-			if vr == vl {
-				res += vl
-			}
-			if vr > vl {
-				break
-			}
-		}
+	for _, vl := range left {
+		res += vl * occurrences[vl]
 	}
 	return res
 }
@@ -79,6 +69,9 @@ func parseInput(input string) (left, right []int) {
 		l := util.LineToInts(line)
 		left = append(left, l[0])
 		right = append(right, l[1])
+		occurrences[l[1]]++
 	}
+	sort.Ints(left)
+	sort.Ints(right)
 	return
 }
