@@ -4,10 +4,12 @@ import (
 	_ "embed"
 	"flag"
 	"fmt"
+	"math"
+	"sort"
 	"strings"
 	"time"
 
-	"github.com/MueR/adventofcode.go/cast"
+	"github.com/MueR/adventofcode.go/util"
 )
 
 var (
@@ -41,19 +43,42 @@ func main() {
 }
 
 func part1(input string) (res int) {
-	parsed := parseInput(input)
-	_ = parsed
+	l, r := parseInput(input)
+	sort.Ints(l)
+	sort.Ints(r)
+	for i, vl := range l {
+		vr := r[i]
+		res += int(math.Abs(float64(vr - vl)))
+	}
 
 	return res
 }
 
 func part2(input string) (res int) {
+	l, r := parseInput(input)
+	sort.Ints(l)
+	sort.Ints(r)
+	for _, vl := range l {
+		for _, vr := range r {
+			if vr == vl {
+				res += vl
+			}
+			if vr > vl {
+				break
+			}
+		}
+	}
 	return res
 }
 
-func parseInput(input string) (ans []int) {
+func parseInput(input string) (left, right []int) {
 	for _, line := range strings.Split(input, "\n") {
-		ans = append(ans, cast.ToInt(line))
+		if len(line) == 0 {
+			continue
+		}
+		l := util.LineToInts(line)
+		left = append(left, l[0])
+		right = append(right, l[1])
 	}
-	return ans
+	return
 }

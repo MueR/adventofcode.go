@@ -5,5 +5,5 @@ input*.txt
 !scripts/skeleton/tmpls/input.txt
 _*
 
-./*/day*/README.md
+**/*.md
 ./*/day*/*.txt

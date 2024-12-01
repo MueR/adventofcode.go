@@ -5,6 +5,14 @@ import (
 	"strings"
 )
 
+func LineToInts(s string) (line []int) {
+	for _, i := range strings.Fields(s) {
+		n, _ := strconv.Atoi(i)
+		line = append(line, n)
+	}
+	return line
+}
+
 func ParseIntList(s, sep string) (list []int) {
 	for _, line := range strings.Split(s, sep) {
 		i, _ := strconv.Atoi(line)
