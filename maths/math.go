@@ -2,7 +2,13 @@ package maths
 
 import (
 	"math"
+
+	"golang.org/x/exp/constraints"
 )
+
+type Number interface {
+	constraints.Float | constraints.Integer
+}
 
 func SumIntSlice(nums []int) (sum int) {
 	for _, n := range nums {
@@ -64,4 +70,15 @@ func LCM(a, b int, integers ...int) int {
 	}
 
 	return result
+}
+
+func Sign[T Number](v T) int {
+	switch {
+	case v < 0:
+		return -1
+	case v == 0:
+		return 0
+	default:
+		return 1
+	}
 }

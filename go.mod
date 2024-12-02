@@ -10,6 +10,7 @@ require (
 	github.com/ericchiang/css v1.4.0
 	github.com/rs/zerolog v1.33.0
 	github.com/stretchr/testify v1.8.4
+	golang.org/x/exp v0.0.0-20241108190413-2d47ceb2692f
 	golang.org/x/net v0.31.0
 	golang.org/x/sync v0.9.0
 	openticket.tech/log/v2 v2.2.0
