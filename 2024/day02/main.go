@@ -14,6 +14,7 @@ import (
 var (
 	//go:embed input.txt
 	input string
+	list  [][]int
 )
 
 func init() {
@@ -30,21 +31,22 @@ func main() {
 	flag.Parse()
 
 	s := time.Now()
+	list = parseInput(input)
+	fmt.Printf("Parsed input in %v\n", time.Since(s))
+	s = time.Now()
 	if part != 2 {
-		ans := part1(input)
+		ans := part1()
 		fmt.Printf("Part 1 output: %v  (%v)\n", ans, time.Since(s))
 	}
 	s = time.Now()
 	if part != 1 {
-		ans := part2(input)
+		ans := part2()
 		fmt.Printf("Part 2 output: %v  (%v)\n", ans, time.Since(s))
 	}
 }
 
-func part1(input string) (res int) {
-	parsed := parseInput(input)
-
-	for _, line := range parsed {
+func part1() (res int) {
+	for _, line := range list {
 		if safe(line) {
 			res++
 		}
@@ -53,10 +55,8 @@ func part1(input string) (res int) {
 	return res
 }
 
-func part2(input string) (res int) {
-	parsed := parseInput(input)
-
-	for _, line := range parsed {
+func part2() (res int) {
+	for _, line := range list {
 		if safe(line) {
 			res++
 			continue

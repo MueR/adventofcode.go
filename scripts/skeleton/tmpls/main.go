@@ -7,12 +7,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/MueR/adventofcode.go/cast"
+	"github.com/MueR/adventofcode.go/util"
 )
 
 var (
 	//go:embed input.txt
-	input string
+	input  string
+	parsed [][]int
 )
 
 func init() {
@@ -29,31 +30,33 @@ func main() {
 	flag.Parse()
 
 	s := time.Now()
+	parsed = parseInput(input)
+	fmt.Printf("Parsed input in %v\n", time.Since(s))
+	s = time.Now()
 	if part != 2 {
-		ans := part1(input)
+		ans := part1()
 		fmt.Printf("Part 1 output: %v  (%v)\n", ans, time.Since(s))
 	}
 	s = time.Now()
 	if part != 1 {
-		ans := part2(input)
+		ans := part2()
 		fmt.Printf("Part 2 output: %v  (%v)\n", ans, time.Since(s))
 	}
 }
 
-func part1(input string) (res int) {
-	parsed := parseInput(input)
+func part1() (res int) {
 	_ = parsed
-
 	return res
 }
 
-func part2(input string) (res int) {
+func part2() (res int) {
+	_ = parsed
 	return res
 }
 
-func parseInput(input string) (ans []int) {
+func parseInput(input string) (ans [][]int) {
 	for _, line := range strings.Split(input, "\n") {
-		ans = append(ans, cast.ToInt(line))
+		ans = append(ans, util.LineToInts(line))
 	}
 	return ans
 }

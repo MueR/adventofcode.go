@@ -6,4 +6,4 @@ input*.txt
 _*
 
 **/*.md
-./*/day*/*.txt
+**/*.txt
