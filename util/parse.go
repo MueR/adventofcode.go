@@ -1,6 +1,9 @@
 package util
 
 import (
+	"bufio"
+	"io"
+	"iter"
 	"strconv"
 	"strings"
 )
@@ -27,4 +30,35 @@ func ParseIntMap(s, sep string) (m map[int]int) {
 		m[i] = v
 	}
 	return m
+}
+
+func SectionsOf(input io.Reader, delim string) iter.Seq[string] {
+	scan := bufio.NewScanner(input)
+	scan.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
+		if atEOF && len(data) == 0 {
+			return 0, nil, nil
+		}
+		if i := strings.Index(string(data), delim); i >= 0 {
+			return i + len(delim), data[0:i], nil
+		}
+		if atEOF {
+			return len(data), data, nil
+		}
+		return 0, nil, nil
+	})
+
+	return func(yield func(string) bool) {
+		for scan.Scan() {
+			if err := scan.Err(); err != nil && err != io.EOF {
+				panic(err)
+			}
+			token := scan.Text()
+			if token == "" {
+				continue
+			}
+			if !yield(token) {
+				break
+			}
+		}
+	}
 }
