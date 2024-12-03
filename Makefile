@@ -1,5 +1,6 @@
 YEAR ?= $(shell date +'%Y')
 DAY ?= $(shell date +'%d')
+DAY_FOLDER=$(shell printf "%02d" $(DAY))
 
 # https://gist.github.com/prwhite/8168133
 help: ## Show this help
@@ -12,7 +13,7 @@ skeleton: ## make skeleton main(_test).go files, optional: $DAY and $YEAR
 	go run scripts/cmd/skeleton/main.go -day $(DAY) -year $(YEAR) ; \
 
 test: ## run tests
-	@ go test -v ./$(YEAR)/day$(DAY) && echo "\n✅  Looks good to me!"
+	@ go test -v ./$(YEAR)/day$(DAY_FOLDER) && echo "\n✅  Looks good to me!"
 
 run: ## run current day
 	@ echo "              _                 _            __    _____          _      "
@@ -25,5 +26,5 @@ run: ## run current day
 	@ echo "                              $(YEAR) day $(DAY)                                 "
 	@ echo ""
 
-	@ go run ./$(YEAR)/day$(DAY)
+	@ go run ./$(YEAR)/day$(DAY_FOLDER)
 
