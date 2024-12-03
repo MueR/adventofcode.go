@@ -21,6 +21,8 @@ import (
 //go:embed tmpls/*.go
 var fs embed.FS
 
+const UserAgent = "https://github.com/MueR/adventofcode.go"
+
 type puzzle struct {
 	Samples      []string
 	Input        []byte
@@ -93,6 +95,7 @@ func (p *puzzle) getInput(day, year int) (err error) {
 		log.Fatal().Msgf("creating request: %v", err)
 		return
 	}
+	req.Header.Set("User-Agent", UserAgent)
 	req.AddCookie(&http.Cookie{Name: "session", Value: token})
 	resp, err := http.DefaultClient.Do(req)
 	log.Err(err).Msgf("getting input")
@@ -115,6 +118,7 @@ func (p *puzzle) getDescription(day, year int) (err error) {
 		log.Err(err).Msg("creating request")
 		return
 	}
+	req.Header.Set("User-Agent", UserAgent)
 	resp, err := http.DefaultClient.Do(req)
 	log.Err(err).Msg("getting description")
 	if err != nil {

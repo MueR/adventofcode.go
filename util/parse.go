@@ -32,6 +32,7 @@ func ParseIntMap(s, sep string) (m map[int]int) {
 	return m
 }
 
+// SectionsOf splits the input into sections separated by delim.
 func SectionsOf(input io.Reader, delim string) iter.Seq[string] {
 	scan := bufio.NewScanner(input)
 	scan.Split(func(data []byte, atEOF bool) (advance int, token []byte, err error) {
