@@ -6,6 +6,7 @@ toolchain go1.23.0
 
 require (
 	github.com/JohannesKaufmann/html-to-markdown/v2 v2.2.1
+	github.com/beefsack/go-astar v0.0.0-20200827232313-4ecf9e304482
 	github.com/emirpasic/gods v1.18.1
 	github.com/ericchiang/css v1.4.0
 	github.com/rs/zerolog v1.33.0

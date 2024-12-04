@@ -15,3 +15,7 @@ func ToInt(arg interface{}) int {
 func IntToByteSlice(in int) []byte {
 	return []byte(strconv.Itoa(in))
 }
+
+func ToRunes(v rune) rune {
+	return v
+}

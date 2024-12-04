@@ -63,3 +63,19 @@ func SectionsOf(input io.Reader, delim string) iter.Seq[string] {
 		}
 	}
 }
+
+func Lines(r io.Reader) iter.Seq[string] {
+	scanner := bufio.NewScanner(r)
+
+	return func(yield func(string) bool) {
+		for scanner.Scan() {
+			if err := scanner.Err(); err != nil && err != io.EOF {
+				panic(err)
+			}
+
+			if !yield(scanner.Text()) {
+				return
+			}
+		}
+	}
+}
