@@ -25,9 +25,28 @@ type calibration struct {
 	input  []int
 }
 
-func (c calibration) Solve(ops []func(a, b int) int) int {
-	if res := FindFormula(c, c.input[0], 1, ops); res != 0 {
+func (c calibration) solve(ops []func(a, b int) int) int {
+	if res := c.findFormula(c.input[0], 1, ops); res != 0 {
 		return res
+	}
+	return 0
+}
+
+func (c calibration) findFormula(partial, index int, ops []func(a, b int) int) int {
+	if partial > c.result {
+		return 0
+	}
+	if index == len(c.input) {
+		if partial == c.result {
+			return c.result
+		}
+		return 0
+	}
+	for _, op := range ops {
+		np := op(partial, c.input[index])
+		if res := c.findFormula(np, index+1, ops); res != 0 {
+			return res
+		}
 	}
 	return 0
 }
@@ -62,14 +81,14 @@ func main() {
 
 func part1() (res int) {
 	for _, c := range parsed {
-		res += c.Solve([]func(a, b int) int{add, mul})
+		res += c.solve([]func(a, b int) int{add, mul})
 	}
 	return res
 }
 
 func part2() (res int) {
 	for _, c := range parsed {
-		res += c.Solve([]func(a, b int) int{add, mul, cat})
+		res += c.solve([]func(a, b int) int{add, mul, cat})
 	}
 	return res
 }
@@ -83,23 +102,4 @@ func parseInput(input string) (ans []calibration) {
 		})
 	}
 	return ans
-}
-
-func FindFormula(c calibration, partial, index int, ops []func(a, b int) int) int {
-	if partial > c.result {
-		return 0
-	}
-	if index == len(c.input) {
-		if partial == c.result {
-			return c.result
-		}
-		return 0
-	}
-	for _, op := range ops {
-		np := op(partial, c.input[index])
-		if res := FindFormula(c, np, index+1, ops); res != 0 {
-			return res
-		}
-	}
-	return 0
 }

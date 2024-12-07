@@ -26,11 +26,11 @@ func TestPart1(t *testing.T) {
 			input: example,
 			want:  3749,
 		},
-		// {
-		// 	name:  "Actual",
-		// 	input: input,
-		// 	want:  12940396350192,
-		// },
+		{
+			name:  "Actual",
+			input: input,
+			want:  12940396350192,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
