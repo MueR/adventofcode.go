@@ -82,3 +82,11 @@ func Sign[T Number](v T) int {
 		return 1
 	}
 }
+
+func Concat[T constraints.Integer](a, b T) T {
+	pow := T(10)
+	for b >= pow {
+		pow *= 10
+	}
+	return a*pow + b
+}

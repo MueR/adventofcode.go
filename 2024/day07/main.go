@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/MueR/adventofcode.go/cast"
+	"github.com/MueR/adventofcode.go/maths"
 	"github.com/MueR/adventofcode.go/util"
 )
 
@@ -15,10 +16,11 @@ var (
 	//go:embed input.txt
 	input  string
 	parsed []calibration
-	add    = func(a, b int) int { return a + b }
-	mul    = func(a, b int) int { return a * b }
-	cat    = func(a, b int) int { return cast.ToInt(fmt.Sprintf("%v%v", a, b)) }
 )
+
+func add(a, b int) int { return a + b }
+func mul(a, b int) int { return a * b }
+func cat(a, b int) int { return maths.Concat(a, b) }
 
 type calibration struct {
 	result int
