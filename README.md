@@ -1,4 +1,5 @@
 # 🎄 Advent of Code 🎄
+[![Go Report Card](https://goreportcard.com/badge/github.com/MueR/adventofcode.go)](https://goreportcard.com/report/github.com/MueR/adventofcode.go)
 
 Solutions to [Advent of Code](https://adventofcode.com/) puzzles.
 
