@@ -74,6 +74,9 @@ func ConvertInputOf[T comparable](input io.Reader, convert func(rune) T) *Map[T]
 	m := Of[T](len(lines[0]), len(lines))
 
 	for row, line := range lines {
+		if line == "" {
+			continue
+		}
 		for col, tile := range line {
 			m.SetTile(col, row, convert(tile))
 		}

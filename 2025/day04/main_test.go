@@ -4,7 +4,16 @@ import (
 	"testing"
 )
 
-var example = `11-22,95-115,998-1012,1188511880-1188511890,222220-222224,1698522-1698528,446443-446449,38593856-38593862,565653-565659,824824821-824824827,2121212118-2121212124`
+var example = `..@@.@@@@.
+@@@.@.@.@@
+@@@@@.@.@@
+@.@@@@..@.
+@@.@@@@.@@
+.@@@@@@@.@
+.@.@.@.@@@
+@.@@@.@@@@
+.@@@@@@@@.
+@.@.@@@.@.`
 
 func TestPart1(t *testing.T) {
 	tests := []struct {
@@ -15,12 +24,12 @@ func TestPart1(t *testing.T) {
 		{
 			name:  "Example",
 			input: example,
-			want:  1227775554,
+			want:  13,
 		},
 		{
 			name:  "Actual",
 			input: input,
-			want:  43952536386,
+			want:  1502,
 		},
 	}
 	for _, tt := range tests {
@@ -42,12 +51,12 @@ func TestPart2(t *testing.T) {
 		{
 			name:  "Example",
 			input: example,
-			want:  4174379265,
+			want:  43,
 		},
 		{
 			name:  "Actual",
 			input: input,
-			want:  54486209192,
+			want:  9083,
 		},
 	}
 	for _, tt := range tests {
