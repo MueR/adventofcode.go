@@ -10,7 +10,9 @@ import (
 type Direction int
 
 const (
-	Up Direction = iota
+	UnknownDirection Direction = iota
+
+	Up
 	Down
 	Left
 	Right
@@ -40,6 +42,8 @@ func (d Direction) Rev() Direction {
 		return UpRight
 	case DownRight:
 		return UpLeft
+	case UnknownDirection:
+		return UnknownDirection
 	}
 	panic("not handled")
 }
@@ -153,6 +157,38 @@ func (p Position) Move(direction Direction, moves int) Position {
 		return p.Delta(-moves, moves)
 	case DownLeft:
 		return p.Delta(moves, -moves)
+	case DownRight:
+		return p.Delta(moves, moves)
+	}
+
+	panic("not handled")
+}
+
+// Delta returns a new position from a row delta and col delta.
+func (p Point) Delta(x, y int) Point {
+	return Point{
+		X: p.X + x,
+		Y: p.Y + y,
+	}
+}
+
+// Move moves into a given direction and a certain number of times.
+func (p Point) Move(direction Direction, moves int) Point {
+	switch direction {
+	case Up:
+		return p.Delta(0, -moves)
+	case Down:
+		return p.Delta(0, moves)
+	case Left:
+		return p.Delta(-moves, 0)
+	case Right:
+		return p.Delta(moves, 0)
+	case UpLeft:
+		return p.Delta(-moves, -moves)
+	case UpRight:
+		return p.Delta(moves, -moves)
+	case DownLeft:
+		return p.Delta(-moves, moves)
 	case DownRight:
 		return p.Delta(moves, moves)
 	}

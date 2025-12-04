@@ -61,7 +61,7 @@ func GCD(a, b int) int {
 	return a
 }
 
-// LCM find Least Common Multiple  via GCD
+// LCM finds the Least Common Multiple via GCD
 func LCM(a, b int, integers ...int) int {
 	result := a * b / GCD(a, b)
 
@@ -70,6 +70,46 @@ func LCM(a, b int, integers ...int) int {
 	}
 
 	return result
+}
+
+func SumSlice[T Number](nums []T) (sum T) {
+	for _, n := range nums {
+		sum += n
+	}
+	return sum
+}
+
+func MultiplySlice[T Number](nums []T) (product T) {
+	for _, n := range nums {
+		product *= n
+	}
+	return product
+}
+
+func Min[T Number](values ...T) (min T) {
+	min = values[0]
+	for _, v := range values {
+		if v < min {
+			min = v
+		}
+	}
+	return min
+}
+
+func Max[T Number](values ...T) (max T) {
+	for _, v := range values {
+		if v > max {
+			max = v
+		}
+	}
+	return max
+}
+
+func Abs[T Number](v T) T {
+	if v < 0 {
+		return -v
+	}
+	return v
 }
 
 func Sign[T Number](v T) int {

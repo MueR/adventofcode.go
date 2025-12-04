@@ -57,13 +57,19 @@ func Run(day, year int) {
 	//ensureNotOverwriting(testFilename)
 	//ensureNotOverwriting(inputFileName)
 
-	mainFile, err := os.Create(mainFilename)
-	if err != nil {
-		log.Fatal().Msgf("creating main.go file: %v", err)
+	var mainFile *os.File
+	var testFile *os.File
+	if _, err = os.Stat(mainFilename); err != nil {
+		mainFile, err = os.Create(mainFilename)
+		if err != nil {
+			log.Fatal().Msgf("creating main.go file: %v", err)
+		}
 	}
-	testFile, err := os.Create(testFilename)
-	if err != nil {
-		log.Fatal().Msgf("creating main_test.go file: %v", err)
+	if _, err = os.Stat(testFilename); err != nil {
+		testFile, err = os.Create(testFilename)
+		if err != nil {
+			log.Fatal().Msgf("creating main_test.go file: %v", err)
+		}
 	}
 
 	p, err := getPuzzle(filepath.Join(util.Dirname(), "../../"), day, year)

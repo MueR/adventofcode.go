@@ -11,6 +11,10 @@ type Point struct {
 	Y int
 }
 
+func PointFromLocation(x, y int) Point {
+	return Point{X: x, Y: y}
+}
+
 func (p *Point) Manhattan(q Point) int {
 	return maths.AbsInt(p.X-q.X) + maths.AbsInt(p.Y-q.Y)
 }

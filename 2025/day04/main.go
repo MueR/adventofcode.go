@@ -10,14 +10,17 @@ import (
 
 	"github.com/MueR/adventofcode.go/data-structures/tilemap"
 	"github.com/MueR/adventofcode.go/util"
+	"github.com/fatih/color"
 	"github.com/hekmon/liveterm"
 )
 
 var (
 	//go:embed input.txt
-	input  string
-	parsed *tilemap.Map[rune]
-	render bool
+	input   string
+	parsed  *tilemap.Map[rune]
+	render  bool
+	redFn   func(a ...interface{}) string
+	greenFn func(a ...interface{}) string
 )
 
 type (
@@ -41,6 +44,9 @@ func main() {
 	flag.IntVar(&part, "part", 0, "part 1 or 2")
 	flag.BoolVar(&render, "render", false, "render puzzle output")
 	flag.Parse()
+
+	redFn = color.New(color.FgRed).Add(color.Bold).SprintFunc()
+	greenFn = color.New(color.FgGreen).SprintFunc()
 
 	s := time.Now()
 	parsed = parseInput(input)
@@ -165,9 +171,9 @@ func printMap(tm *tilemap.Map[rune]) (output []string) {
 			}
 			switch c.Value {
 			case '@':
-				output[y] += "\033[32m" + string(c.Value) + "\033[0m"
+				output[y] += greenFn(string(c.Value))
 			case 'x':
-				output[y] += "\033[1m\033[31m" + string(c.Value) + "\033[0m\033[0m"
+				output[y] += redFn(string(c.Value))
 			default:
 				output[y] += string(c.Value)
 			}
