@@ -1,9 +1,11 @@
 package main
 
 import (
+	"cmp"
 	_ "embed"
 	"flag"
 	"fmt"
+	"slices"
 	"sort"
 	"strconv"
 	"strings"
@@ -12,22 +14,23 @@ import (
 
 var (
 	//go:embed input.txt
-	input  string
-	ranges []ingredientRange
-	solve  solution
-	render bool
+	input       string
+	ranges      []ingredientRange
+	ingredients sort.IntSlice
+	solve       solution
+	render      bool
 )
 
 type (
 	solution struct {
-		part1  int64
-		part2  int64
+		part1  int
+		part2  int
 		solved bool
 	}
 
 	ingredientRange struct {
-		start int64
-		end   int64
+		start int
+		end   int
 	}
 )
 
@@ -60,43 +63,26 @@ func main() {
 	}
 }
 
-func part1() (res int64) {
-	return solve.part1
-}
-
-func part2() (res int64) {
-	return solve.part2
-}
-
-func parseInput(input string) (solve solution) {
-	sets := strings.Split(input, "\n\n")
-	fresh := sets[0]
-	ranges = make([]ingredientRange, 0)
-	for _, line := range strings.Split(fresh, "\n") {
-		r := strings.SplitN(line, "-", 2)
-		start, _ := strconv.ParseInt(r[0], 10, 64)
-		end, _ := strconv.ParseInt(r[1], 10, 64)
-		ranges = append(ranges, ingredientRange{
-			start: start,
-			end:   end,
-		})
-	}
-
-	sort.Slice(ranges, func(i, j int) bool {
-		return ranges[i].start < ranges[j].start
-	})
-
-	for _, line := range strings.Split(sets[1], "\n") {
-		conv, _ := strconv.Atoi(line)
-		id := int64(conv)
-		if isFresh(id) {
+func part1() (res int) {
+	cur := 0
+	for _, id := range ingredients {
+		for ranges[cur].end < id {
+			cur++
+			if cur >= len(ranges) {
+				return solve.part1
+			}
+		}
+		if ranges[cur].start <= id {
 			solve.part1++
 		}
 	}
+	return solve.part1
+}
 
-	highest := int64(0)
+func part2() (res int) {
+	highest := 0
 	for _, r := range ranges {
-		inc := int64(0)
+		inc := 0
 		if r.end <= highest {
 			continue
 		}
@@ -109,18 +95,35 @@ func parseInput(input string) (solve solution) {
 		}
 		solve.part2 += inc
 	}
-
-	return solve
+	return solve.part2
 }
 
-func isFresh(id int64) bool {
-	for _, r := range ranges {
-		if r.start <= id && id <= r.end {
-			return true
-		}
-		if r.start > id {
-			return false
-		}
+func parseInput(input string) (solve solution) {
+	sets := strings.Split(input, "\n\n")
+	fresh := sets[0]
+	ranges = make([]ingredientRange, 0)
+	for _, line := range strings.Split(fresh, "\n") {
+		r := strings.SplitN(line, "-", 2)
+		start, _ := strconv.Atoi(r[0])
+		end, _ := strconv.Atoi(r[1])
+		ranges = append(ranges, ingredientRange{
+			start: start,
+			end:   end,
+		})
 	}
-	return false
+
+	slices.SortFunc(ranges, func(a ingredientRange, b ingredientRange) int {
+		if n := cmp.Compare(a.start, b.start); n != 0 {
+			return n
+		}
+		return cmp.Compare(a.end, b.end)
+	})
+
+	for _, line := range strings.Split(sets[1], "\n") {
+		num, _ := strconv.Atoi(line)
+		ingredients = append(ingredients, num)
+	}
+	ingredients.Sort()
+
+	return solve
 }

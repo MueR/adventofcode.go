@@ -20,18 +20,18 @@ func TestPart1(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
-		want  int64
+		want  int
 	}{
 		{
 			name:  "Example",
 			input: example,
 			want:  3,
 		},
-		//{
-		//	name:  "Actual",
-		//	input: input,
-		//	want:  1502,
-		//},
+		{
+			name:  "Actual",
+			input: input,
+			want:  511,
+		},
 	}
 	render = false
 	for _, tt := range tests {
@@ -48,18 +48,18 @@ func TestPart2(t *testing.T) {
 	tests := []struct {
 		name  string
 		input string
-		want  int64
+		want  int
 	}{
 		{
 			name:  "Example",
 			input: example,
 			want:  14,
 		},
-		//{
-		//	name:  "Actual",
-		//	input: input,
-		//	want:  9083,
-		//},
+		{
+			name:  "Actual",
+			input: input,
+			want:  350939902751909,
+		},
 	}
 	render = false
 	for _, tt := range tests {
