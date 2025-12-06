@@ -80,6 +80,10 @@ func SumSlice[T Number](nums []T) (sum T) {
 }
 
 func MultiplySlice[T Number](nums []T) (product T) {
+	if len(nums) == 0 {
+		return 0
+	}
+	product = 1
 	for _, n := range nums {
 		product *= n
 	}
